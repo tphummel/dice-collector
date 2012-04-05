@@ -1,0 +1,15 @@
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS get_location_name$$
+CREATE FUNCTION get_location_name(in_locationid INT)
+	RETURNS VARCHAR(50)
+BEGIN
+	DECLARE v_location VARCHAR(50);
+	SElECT name
+	INTO v_location
+	FROM location
+	WHERE id = in_locationid;
+	RETURN v_location;
+END$$
+
+DELIMITER ;

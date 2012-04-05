@@ -1,0 +1,16 @@
+DELIMITER $$
+
+DROP FUNCTION IF EXISTS plyr_nm$
+CREATE FUNCTION plyr_nm(in_playerid INT)
+	RETURNS VARCHAR(50)
+BEGIN
+	DECLARE v_name VARCHAR(50);
+	
+	SElECT name
+	INTO v_name
+	FROM shooter
+	WHERE id = in_playerid;
+	RETURN v_name;
+END$$
+
+DELIMITER ;

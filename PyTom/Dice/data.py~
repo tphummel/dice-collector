@@ -1,0 +1,47 @@
+#!/usr/bin/python
+from ..Data import mysql
+
+def getListOfShooters():
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	cursor.execute("""SELECT id, name from shooter ORDER BY id""")
+	result = cursor.fetchall()
+	conn.close()
+	return result
+	
+def getListOfLocations():
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	cursor.execute("""SELECT id, name from location ORDER BY id""")
+	result = cursor.fetchall()
+	conn.close()
+	return result
+	
+def insertSession(locationid):
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	strInsert = """INSERT INTO session (locationid) VALUES (%s)""" % locationid
+	cursor.execute(strInsert)
+	lastId = cursor.lastrowid #cursor.execute("""SELECT last_insert_id()""")
+	conn.close()
+	return lastId
+
+def insertTurn(sessionid, shooterid):
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	strInsert = """INSERT INTO turn (sessionid, shooterid) VALUES (%s, %s)""" % (sessionid, shooterid)
+	cursor.execute(strInsert)
+	lastId = cursor.lastrowid #= cursor.execute("""SELECT last_insert_id()""")
+	conn.close()
+	return lastId
+
+def insertThrow(sessionid, shooterid, turnid, value, result, iscomeout):
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	strInsert = """INSERT INTO throw (sessionid, shooterid, turnid, value, result, event_prop_comeout) VALUES (%s, %s, %s, %s, %s, '%s')""" % (sessionid, shooterid, turnid, value, result, iscomeout)
+	print strInsert
+	cursor.execute(strInsert)
+	lastId = cursor.lastrowid #= cursor.execute("""SELECT last_insert_id()""")
+	conn.close()
+	return lastId
+
