@@ -1,6 +1,6 @@
 # dice-collector
 
-CLI tool for recording craps dice sessions to a SQLite database. (Originally a Python 2 / MySQL tool, ported to Go + SQLite; the legacy implementation has been removed but lives on in git history.)
+CLI tool for recording craps dice sessions to a SQLite database.
 
 ## What it does
 
@@ -41,9 +41,9 @@ Example: `456T74` → 4, 5, 6, 10, 7, 4
 
 ## Database
 
-SQLite. Tables: `shooter`, `location`, `session`, `turn`, `throw`, `result` — same shape as the original MySQL schema. `turn.id` and `throw.sequence` are scoped per `(session, shooter)` / `(session, shooter, turn)`, matching the original MyISAM grouped `AUTO_INCREMENT` behavior.
+SQLite. Tables: `shooter`, `location`, `session`, `turn`, `throw`, `result`. `turn.id` is scoped per `(session, shooter)` and `throw.sequence` per `(session, shooter, turn)` — each counts up independently within its group rather than globally.
 
-The schema and seed data (original locations, shooters, result codes, and all historical sessions/turns/throws from the original MySQL dump) are embedded in the binary (`internal/dice/schema.sql`, `internal/dice/seed.sql`) and applied automatically to a fresh database file on first run.
+Schema and seed data (locations, shooters, result codes, historical sessions/turns/throws) are embedded in the binary (`internal/dice/schema.sql`, `internal/dice/seed.sql`) and applied automatically on first run.
 
 By default the database file is `dice.db` in the working directory; override with `DICE_DB_PATH`.
 

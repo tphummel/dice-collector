@@ -110,10 +110,8 @@ func (s *Store) InsertSession(locationID int64) (int64, error) {
 	return res.LastInsertId()
 }
 
-// InsertTurn records a new turn for shooterID within sessionID. Turn ids are
-// scoped per (session, shooter) pair, matching the original MyISAM schema's
-// grouped AUTO_INCREMENT behavior, so the id doubles as "this shooter's Nth
-// turn in this session".
+// InsertTurn records a new turn for shooterID within sessionID, with id
+// scoped per (session, shooter) — see README's Database section.
 func (s *Store) InsertTurn(sessionID, shooterID int64) (int64, error) {
 	tx, err := s.db.Begin()
 	if err != nil {
@@ -140,8 +138,7 @@ func (s *Store) InsertTurn(sessionID, shooterID int64) (int64, error) {
 	return nextID, tx.Commit()
 }
 
-// InsertThrow records one roll. sequence is scoped per (session, shooter,
-// turn), mirroring the original grouped AUTO_INCREMENT.
+// InsertThrow records one roll, with sequence scoped per (session, shooter, turn).
 func (s *Store) InsertThrow(sessionID, shooterID, turnID int64, value, result int, propComeout bool) error {
 	tx, err := s.db.Begin()
 	if err != nil {

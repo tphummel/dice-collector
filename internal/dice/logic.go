@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-// Result codes stored in throw.result, matching the original schema's `result` lookup table.
+// Result codes stored in throw.result.
 const (
 	ResultNoConsequence = 1
 	ResultComeoutWin    = 2
@@ -25,8 +25,8 @@ type Throw struct {
 	PropComeout bool
 }
 
-// ProcessTurnThrows applies craps rules to a string of throw characters
-// (2-9 face values, T=10, E=11, B=12, O=off table, M=misc/invalid).
+// ProcessTurnThrows applies craps rules to a string of throw characters,
+// one rune per roll (see README for the character encoding).
 func ProcessTurnThrows(throws string) ([]Throw, error) {
 	isComeout := true
 	point := 0
