@@ -62,6 +62,16 @@ jobs:
           done
           (cd dist && sha256sum * > checksums.txt)
 
+      - name: Publish short-SHA release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sha=$(git rev-parse --short HEAD)
+          gh release delete "$sha" --yes --cleanup-tag || true
+          gh release create "$sha" dist/* \
+            --title "$sha" \
+            --notes "Automated build from $sha"
+
       - name: Publish latest release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
