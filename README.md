@@ -1,6 +1,6 @@
 # dice-collector
 
-CLI tool for recording craps dice sessions to a SQLite database. (Originally a Python 2 / MySQL tool; see [Legacy Python version](#legacy-python-version) below.)
+CLI tool for recording craps dice sessions to a SQLite database. (Originally a Python 2 / MySQL tool, ported to Go + SQLite; the legacy implementation has been removed but lives on in git history.)
 
 ## What it does
 
@@ -43,7 +43,7 @@ Example: `456T74` → 4, 5, 6, 10, 7, 4
 
 SQLite. Tables: `shooter`, `location`, `session`, `turn`, `throw`, `result` — same shape as the original MySQL schema. `turn.id` and `throw.sequence` are scoped per `(session, shooter)` / `(session, shooter, turn)`, matching the original MyISAM grouped `AUTO_INCREMENT` behavior.
 
-The schema and seed data (original locations, shooters, result codes, and all historical sessions/turns/throws from `PyTom/Data/dice.sql.gz`) are embedded in the binary (`internal/dice/schema.sql`, `internal/dice/seed.sql`) and applied automatically to a fresh database file on first run.
+The schema and seed data (original locations, shooters, result codes, and all historical sessions/turns/throws from the original MySQL dump) are embedded in the binary (`internal/dice/schema.sql`, `internal/dice/seed.sql`) and applied automatically to a fresh database file on first run.
 
 By default the database file is `dice.db` in the working directory; override with `DICE_DB_PATH`.
 
@@ -79,7 +79,3 @@ Every push to `main` rebuilds cross-platform binaries (linux/darwin, amd64/arm64
 ## CI/CD
 
 `.github/workflows/ci.yml` runs `go test` and `go vet` on every push/PR to `main`, then (on `main` pushes only) builds and publishes the binaries described above.
-
-## Legacy Python version
-
-The original Python 2 / MySQL implementation is still present under `PyTom/` and `crunchdicesesh.py` for reference. It requires Python 2, `MySQLdb`, and a MySQL server seeded from `PyTom/Data/dice.sql.gz`; it is no longer maintained.
