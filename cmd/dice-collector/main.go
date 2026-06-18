@@ -40,7 +40,7 @@ func main() {
 	fmt.Println()
 
 	for _, loc := range locations {
-		fmt.Printf("%d. %s\n", loc.ID, loc.Name)
+		fmt.Printf("%d. %s (%s, %s)\n", loc.ID, loc.Name, loc.City, loc.State)
 	}
 	sessionLocation := chooseByID(reader, "Choose Location: ", locations, func(l dice.Location) int64 { return l.ID })
 

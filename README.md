@@ -47,6 +47,20 @@ Schema and seed data (locations, shooters, result codes, historical sessions/tur
 
 By default the database file is `dice.db` in the working directory; override with `DICE_DB_PATH`.
 
+### Adding a location to an existing database
+
+`seed.sql` only runs against a brand-new database file (see `Open` in `internal/dice/store.go`), so adding a row there has no effect on a `dice.db` you've already been using. To add a location to an existing database, insert it directly with the `sqlite3` CLI:
+
+```
+sqlite3 dice.db "INSERT INTO location (name) VALUES ('Circus Circus');"
+```
+
+Check it landed:
+
+```
+sqlite3 dice.db "SELECT * FROM location;"
+```
+
 ## Structure
 
 ```
