@@ -1,6 +1,6 @@
 # dice-collector
 
-CLI tool for recording craps dice sessions to a MySQL database.
+CLI tool for recording craps dice sessions to a SQLite database.
 
 ## What it does
 
@@ -41,26 +41,41 @@ Example: `456T74` → 4, 5, 6, 10, 7, 4
 
 ## Database
 
-MySQL. Schema is in `PyTom/Data/dice.sql.gz`. Tables: `shooter`, `location`, `session`, `turn`, `throw`, `result`.
+SQLite. Tables: `shooter`, `location`, `session`, `turn`, `throw`, `result`. `turn.id` is scoped per `(session, shooter)` and `throw.sequence` per `(session, shooter, turn)` — each counts up independently within its group rather than globally.
 
-Connection is configured in `PyTom/Data/mysql.py`.
+Schema and seed data (locations, shooters, result codes, historical sessions/turns/throws) are embedded in the binary (`internal/dice/schema.sql`, `internal/dice/seed.sql`) and applied automatically on first run.
+
+By default the database file is `dice.db` in the working directory; override with `DICE_DB_PATH`.
 
 ## Structure
 
 ```
-crunchdicesesh.py       # entry point
-PyTom/
-  Dice/
-    logic.py            # craps rules / throw processing
-    data.py             # DB read/write helpers
-    sql/                # MySQL stored functions
-  Data/
-    mysql.py            # DB connection
-  Tcrypt/Utilities/
-    io.py               # file I/O utility (unused)
+cmd/dice-collector/
+  main.go          # entry point / CLI loop
+internal/dice/
+  logic.go         # craps rules / throw processing
+  store.go         # DB read/write helpers, schema bootstrap
+  schema.sql       # table definitions (embedded)
+  seed.sql         # lookup + historical data (embedded)
 ```
 
 ## Requirements
 
-- Python 3
-- `mysqlclient` (`pip install mysqlclient`)
+- Go 1.25+
+- `modernc.org/sqlite` (pure-Go SQLite driver, no CGO/C toolchain needed) — fetched automatically via `go build`/`go run`
+
+## Running
+
+```
+go run ./cmd/dice-collector
+# or
+go build -o dice-collector ./cmd/dice-collector && ./dice-collector
+```
+
+## Installing a prebuilt binary
+
+Every push to `main` rebuilds cross-platform binaries (linux/darwin, amd64/arm64, plus windows/amd64) and publishes them to the [`latest` release](https://github.com/tphummel/dice-collector/releases/tag/latest), alongside a `checksums.txt`. Download the one matching your platform and run it directly — no Go toolchain required.
+
+## CI/CD
+
+`.github/workflows/ci.yml` runs `go test` and `go vet` on every push/PR to `main`, then (on `main` pushes only) builds and publishes the binaries described above.
