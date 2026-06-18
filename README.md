@@ -50,7 +50,8 @@ By default the database file is `dice.db` in the working directory; override wit
 ## Structure
 
 ```
-main.go            # entry point / CLI loop
+cmd/dice-collector/
+  main.go          # entry point / CLI loop
 internal/dice/
   logic.go         # craps rules / throw processing
   store.go         # DB read/write helpers, schema bootstrap
@@ -66,10 +67,18 @@ internal/dice/
 ## Running
 
 ```
-go run .
+go run ./cmd/dice-collector
 # or
-go build -o dice-collector . && ./dice-collector
+go build -o dice-collector ./cmd/dice-collector && ./dice-collector
 ```
+
+## Installing a prebuilt binary
+
+Every push to `main` rebuilds cross-platform binaries (linux/darwin, amd64/arm64, plus windows/amd64) and publishes them to the [`latest` release](https://github.com/tphummel/dice-collector/releases/tag/latest), alongside a `checksums.txt`. Download the one matching your platform and run it directly — no Go toolchain required.
+
+## CI/CD
+
+`.github/workflows/ci.yml` runs `go test` and `go vet` on every push/PR to `main`, then (on `main` pushes only) builds and publishes the binaries described above.
 
 ## Legacy Python version
 
