@@ -50,6 +50,7 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Printf("\nSession Created: id=%d\n", sessionID)
+	printThrowEncodingReference()
 
 	var summary strings.Builder
 	anotherTurn := "Y"
@@ -98,6 +99,17 @@ func main() {
 	fmt.Println("Session Complete")
 	fmt.Println("Summary--", sessionLocation.Name)
 	fmt.Println(strings.TrimRight(summary.String(), "\n"))
+}
+
+func printThrowEncodingReference() {
+	fmt.Println()
+	fmt.Println("Throw entry reference:")
+	fmt.Println("  2-9 : Face value")
+	fmt.Println("  T   : 10")
+	fmt.Println("  E   : 11 (yo-leven)")
+	fmt.Println("  B   : 12 (boxcars)")
+	fmt.Println("  O   : Off table")
+	fmt.Println("  M   : Misc / invalid roll")
 }
 
 func promptLine(r *bufio.Reader, prompt string) string {
