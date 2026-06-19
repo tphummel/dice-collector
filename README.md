@@ -43,7 +43,7 @@ Example: `456T74` → 4, 5, 6, 10, 7, 4
 
 SQLite. Tables: `shooter`, `location`, `session`, `turn`, `throw`, `result`. `turn.id` is scoped per `(session, shooter)` and `throw.sequence` per `(session, shooter, turn)` — each counts up independently within its group rather than globally.
 
-Schema and seed data (locations, shooters, result codes, historical sessions/turns/throws) are embedded in the binary (`internal/dice/schema.sql`, `internal/dice/seed.sql`) and applied automatically on first run.
+Schema and seed data (locations, shooters, result codes, historical sessions/turns/throws) are embedded in the binary (`internal/dice/schema.sql`, `internal/dice/seed.sql`) and applied automatically on first run. `seed.sql` only runs against a brand-new database file, so it has no effect on a `dice.db` you've already been using — shooters and locations on an existing database are managed via ad hoc queries against the SQLite file.
 
 By default the database file is `dice.db` in the working directory; override with `DICE_DB_PATH`.
 

@@ -1,8 +1,10 @@
-INSERT INTO location (id, name) VALUES
-(1, 'El Cortez'),
-(2, 'Golden Gate'),
-(3, '4 Queens'),
-(4, 'Whiskey Pete''s');
+INSERT INTO location (id, name, city, state) VALUES
+(1, 'El Cortez', 'Las Vegas', 'Nevada'),
+(2, 'Golden Gate', 'Las Vegas', 'Nevada'),
+(3, '4 Queens', 'Las Vegas', 'Nevada'),
+(4, 'Whiskey Pete''s', 'Primm', 'Nevada'),
+(5, 'Fontainebleau', 'Las Vegas', 'Nevada'),
+(6, 'Red Rock', 'Las Vegas', 'Nevada');
 INSERT INTO result (id, name) VALUES
 (1, 'no consequence'),
 (2, 'comeout win'),

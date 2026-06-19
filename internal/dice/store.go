@@ -20,8 +20,10 @@ type Shooter struct {
 }
 
 type Location struct {
-	ID   int64
-	Name string
+	ID    int64
+	Name  string
+	City  string
+	State string
 }
 
 type Store struct {
@@ -85,7 +87,7 @@ func (s *Store) Shooters() ([]Shooter, error) {
 }
 
 func (s *Store) Locations() ([]Location, error) {
-	rows, err := s.db.Query(`SELECT id, name FROM location ORDER BY id`)
+	rows, err := s.db.Query(`SELECT id, name, city, state FROM location ORDER BY id`)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +96,7 @@ func (s *Store) Locations() ([]Location, error) {
 	var locations []Location
 	for rows.Next() {
 		var loc Location
-		if err := rows.Scan(&loc.ID, &loc.Name); err != nil {
+		if err := rows.Scan(&loc.ID, &loc.Name, &loc.City, &loc.State); err != nil {
 			return nil, err
 		}
 		locations = append(locations, loc)
